@@ -1,0 +1,24 @@
+{
+  "name": "@dbusacca/ngx-chips",
+  "version": "1.0.0",
+  "description": "Tag Input component for Angular, fork of ngx-chips by Giancarlo Buomprisco",
+  "author": {
+    "name": "Diego Busacca",
+    "email": "diego.busacca@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Giancarlo Buomprisco",
+      "email": "giancarlopsk@gmail.com"
+    } 
+  ],
+  "license": "MIT",
+
+  "dependencies": {
+    "ng2-material-dropdown": "0.10.1"
+  },
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0"
+  }
+}

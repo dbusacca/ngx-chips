@@ -9,7 +9,7 @@ import {
     QueryList,
     TemplateRef,
     Type,
-    ViewChild,
+    ViewChild
 } from '@angular/core';
 
 // rx
@@ -22,7 +22,9 @@ import { TagInputComponent } from '../tag-input/tag-input';
 import { TagInputDropdownOptions } from '../../defaults';
 import { TagModel } from '../../core/accessor';
 
-const defaults: Type<TagInputDropdownOptions> = forwardRef(() => OptionsProvider.defaults.dropdown);
+// const defaults: Type<TagInputDropdownOptions> = forwardRef(() => OptionsProvider.defaults.dropdown);
+const defaults: () => TagInputDropdownOptions = () =>
+    OptionsProvider.defaults.dropdown;
 
 @Component({
     selector: 'tag-input-dropdown',
@@ -43,18 +45,18 @@ export class TagInputDropdown {
     /**
      * @name offset
      */
-    @Input() public offset: string = new defaults().offset;
+    @Input() public offset: string = defaults().offset;
 
     /**
      * @name focusFirstElement
      */
-    @Input() public focusFirstElement = new defaults().focusFirstElement;
+    @Input() public focusFirstElement = defaults().focusFirstElement;
 
     /**
      * - show autocomplete dropdown if the value of input is empty
      * @name showDropdownIfEmpty
      */
-    @Input() public showDropdownIfEmpty = new defaults().showDropdownIfEmpty;
+    @Input() public showDropdownIfEmpty = defaults().showDropdownIfEmpty;
 
     /**
      * @description observable passed as input which populates the autocomplete items
@@ -66,50 +68,53 @@ export class TagInputDropdown {
      * - desc minimum text length in order to display the autocomplete dropdown
      * @name minimumTextLength
      */
-    @Input() public minimumTextLength = new defaults().minimumTextLength;
+    @Input() public minimumTextLength = defaults().minimumTextLength;
 
     /**
      * - number of items to display in the autocomplete dropdown
      * @name limitItemsTo
      */
-    @Input() public limitItemsTo: number = new defaults().limitItemsTo;
+    @Input() public limitItemsTo: number = defaults().limitItemsTo;
 
     /**
      * @name displayBy
      */
-    @Input() public displayBy = new defaults().displayBy;
+    @Input() public displayBy = defaults().displayBy;
 
     /**
      * @name identifyBy
      */
-    @Input() public identifyBy = new defaults().identifyBy;
+    @Input() public identifyBy = defaults().identifyBy;
 
     /**
      * @description a function a developer can use to implement custom matching for the autocomplete
      * @name matchingFn
      */
-    @Input() public matchingFn: (value: string, target: TagModel) => boolean = new defaults().matchingFn;
+    @Input() public matchingFn: (
+        value: string,
+        target: TagModel
+    ) => boolean = defaults().matchingFn;
 
     /**
      * @name appendToBody
      */
-    @Input() public appendToBody = new defaults().appendToBody;
+    @Input() public appendToBody = defaults().appendToBody;
 
     /**
      * @name keepOpen
      * @description option to leave dropdown open when adding a new item
      */
-    @Input() public keepOpen = new defaults().keepOpen;
+    @Input() public keepOpen = defaults().keepOpen;
 
     /**
      * @name dynamicUpdate
      */
-    @Input() public dynamicUpdate = new defaults().dynamicUpdate;
+    @Input() public dynamicUpdate = defaults().dynamicUpdate;
 
     /**
-    * @name zIndex
+     * @name zIndex
      */
-    @Input() public zIndex = new defaults().zIndex;
+    @Input() public zIndex = defaults().zIndex;
 
     /**
      * list of items that match the current value of the input (for autocomplete)
@@ -147,10 +152,12 @@ export class TagInputDropdown {
         }
 
         return items.map((item: TagModel) => {
-            return typeof item === 'string' ? {
-                [this.displayBy]: item,
-                [this.identifyBy]: item
-            } : item;
+            return typeof item === 'string'
+                ? {
+                      [this.displayBy]: item,
+                      [this.identifyBy]: item
+                  }
+                : item;
         });
     }
 
@@ -170,8 +177,7 @@ export class TagInputDropdown {
         const DEBOUNCE_TIME = 200;
         const KEEP_OPEN = this.keepOpen;
 
-        this.tagInput
-            .onTextChange
+        this.tagInput.onTextChange
             .asObservable()
             .pipe(
                 debounceTime(DEBOUNCE_TIME),
@@ -235,24 +241,31 @@ export class TagInputDropdown {
      * @name show
      */
     public show = (): void => {
-        const maxItemsReached = this.tagInput.items.length === this.tagInput.maxItems;
+        const maxItemsReached =
+            this.tagInput.items.length === this.tagInput.maxItems;
         const value = this.getFormValue();
         const hasMinimumText = value.trim().length >= this.minimumTextLength;
         const position = this.calculatePosition();
         const items = this.getMatchingItems(value);
         const hasItems = items.length > 0;
         const isHidden = this.isVisible === false;
-        const showDropdownIfEmpty = this.showDropdownIfEmpty && hasItems && !value;
+        const showDropdownIfEmpty =
+            this.showDropdownIfEmpty && hasItems && !value;
         const isDisabled = this.tagInput.disable;
 
-        const shouldShow = isHidden && ((hasItems && hasMinimumText) || showDropdownIfEmpty);
+        const shouldShow =
+            isHidden && ((hasItems && hasMinimumText) || showDropdownIfEmpty);
         const shouldHide = this.isVisible && !hasItems;
 
         if (this.autocompleteObservable && hasMinimumText) {
             return this.getItemsFromObservable(value);
         }
 
-        if ((!this.showDropdownIfEmpty && !value) || maxItemsReached || isDisabled) {
+        if (
+            (!this.showDropdownIfEmpty && !value) ||
+            maxItemsReached ||
+            isDisabled
+        ) {
             return this.dropdown.hide();
         }
 
@@ -263,7 +276,7 @@ export class TagInputDropdown {
         } else if (shouldHide) {
             this.hide();
         }
-    }
+    };
 
     /**
      * @name hide
@@ -315,15 +328,21 @@ export class TagInputDropdown {
     private requestAdding = async (item: Ng2MenuItem) => {
         const tag = this.createTagModel(item);
         await this.tagInput.onAddingRequested(true, tag).catch(() => {});
-    }
+    };
 
     /**
      * @name createTagModel
      * @param item
      */
     private createTagModel(item: Ng2MenuItem): TagModel {
-        const display = typeof item.value === 'string' ? item.value : item.value[this.displayBy];
-        const value = typeof item.value === 'string' ? item.value : item.value[this.identifyBy];
+        const display =
+            typeof item.value === 'string'
+                ? item.value
+                : item.value[this.displayBy];
+        const value =
+            typeof item.value === 'string'
+                ? item.value
+                : item.value[this.identifyBy];
 
         return {
             ...item.value,
@@ -344,14 +363,19 @@ export class TagInputDropdown {
         const dupesAllowed = this.tagInput.allowDupes;
 
         return this.autocompleteItems.filter((item: TagModel) => {
-            const hasValue = dupesAllowed ? false : this.tagInput.tags.some(tag => {
-                const identifyBy = this.tagInput.identifyBy;
-                const model = typeof tag.model === 'string' ? tag.model : tag.model[identifyBy];
+            const hasValue = dupesAllowed
+                ? false
+                : this.tagInput.tags.some(tag => {
+                      const identifyBy = this.tagInput.identifyBy;
+                      const model =
+                          typeof tag.model === 'string'
+                              ? tag.model
+                              : tag.model[identifyBy];
 
-                return model === item[this.identifyBy];
-            });
+                      return model === item[this.identifyBy];
+                  });
 
-            return this.matchingFn(value, item) && (hasValue === false);
+            return this.matchingFn(value, item) && hasValue === false;
         });
     }
 
@@ -367,7 +391,7 @@ export class TagInputDropdown {
      */
     private resetItems = (): void => {
         this.items = [];
-    }
+    };
 
     /**
      * @name populateItems
@@ -375,10 +399,12 @@ export class TagInputDropdown {
      */
     private populateItems(data: any): TagInputDropdown {
         this.autocompleteItems = data.map(item => {
-            return typeof item === 'string' ? {
-                [this.displayBy]: item,
-                [this.identifyBy]: item
-            } : item;
+            return typeof item === 'string'
+                ? {
+                      [this.displayBy]: item,
+                      [this.identifyBy]: item
+                  }
+                : item;
         });
 
         return this;
@@ -409,7 +435,7 @@ export class TagInputDropdown {
         this.autocompleteObservable(text)
             .pipe(first())
             .subscribe(subscribeFn, () => this.setLoadingState(false));
-    }
+    };
 
     /**
      * @name setLoadingState

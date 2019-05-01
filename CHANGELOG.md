@@ -1,3 +1,15 @@
+## 7.0.0
+
+### Breaking Changes
+- Updated to Angular 7.2.X
+- Changed scss location from `~ngx/chips/core/styles` to `~ngx/chips/lib/core/styles` to 
+
+### Features
+- Reworked to use `@angular/cli` workspace for building
+
+### Bug fixes
+- Now the library is compatibles with both `es5` and `es2015`/`es6` compile target
+
 ## 1.2.9
 
 ### Breaking Changes
