@@ -3,12 +3,14 @@
   "version": "7.2.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng serve demo",
+    "build": "npm run build:ngx-chips",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:ngx-chips": "rm -rf ./dist/ngx-chips && npm run ng build ngx-chips && cp -R ./projects/ngx-chips/src/lib/core/styles ./dist/ngx-chips/lib/core/styles"
+    "build:ngx-chips": "rm -rf ./dist/ngx-chips && npm run ng build ngx-chips && cp -R ./projects/ngx-chips/src/lib/core/styles ./dist/ngx-chips/lib/core/styles",
+    "build:demo": "ng build demo",
+    "pack": "npm pack ./dist/ngx-chips"
   },
   "private": true,
   "dependencies": {

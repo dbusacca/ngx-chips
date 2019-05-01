@@ -1,6 +1,6 @@
 {
-  "name": "@dbusacca/ngx-chips",
-  "version": "1.0.0",
+  "name": "@busacca/ngx-chips",
+  "version": "7.0.0",
   "description": "Tag Input component for Angular, fork of ngx-chips by Giancarlo Buomprisco",
   "author": {
     "name": "Diego Busacca",

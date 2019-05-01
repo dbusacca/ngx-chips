@@ -19,10 +19,10 @@
       "dom"
     ],
     "paths": {
-      "@dbusacca/ngx-chips": [
+      "@busacca/ngx-chips": [
         "dist/ngx-chips"
       ],
-      "@dbusacca/ngx-chips/*": [
+      "@busacca/ngx-chips/*": [
         "dist/ngx-chips/*"
       ]
     }

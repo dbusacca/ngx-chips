@@ -2,7 +2,7 @@ MIT License
 
 Copyright for portions of project Foo are held by Giancarlo Buomprisco, 2017
 as part of project ngx-chips.
-All other copyright for project @dbusacca/ngx-chips are held by Diego Busacca, 2019.
+All other copyright for project @busacca/ngx-chips are held by Diego Busacca, 2019.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

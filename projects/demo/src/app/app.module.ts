@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { TagInputModule } from '@dbusacca/ngx-chips';
+import { TagInputModule } from '@busacca/ngx-chips';
 import { Home } from './home/home';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
