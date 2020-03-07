@@ -50,5 +50,5 @@ import {
     ]
 })
 export class TagRipple {
-    @Input() public state: string = 'none';
+    @Input() public state = 'none';
 }

@@ -1,12 +1,19 @@
-import {FormControl} from '@angular/forms';
-import {async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { FormControl } from '@angular/forms';
+import {
+  async,
+  ComponentFixture,
+  discardPeriodicTasks,
+  fakeAsync,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 
-import {By} from '@angular/platform-browser';
-import {Subject} from 'rxjs';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {TagModel} from '../../core';
-import {TagInputComponent} from './tag-input';
+import { TagModel } from '../../core';
+import { TagInputComponent } from './tag-input';
 
 import {
     BasicTagInputComponent,
@@ -46,31 +53,42 @@ describe('TagInputComponent', () => {
         fixture.detectChanges();
         tick();
 
-        return fixture.debugElement.query(By.directive(TagInputComponent)).componentInstance;
+    const component = fixture.debugElement.query(
+      By.directive(TagInputComponent)
+    ).componentInstance as TagInputComponent;
+    component.ngAfterViewInit();
+
+    fixture.detectChanges();
+    tick();
+    return component;
     }
 
     describe('Basic behaviours', () => {
         it('should have 2 tags set by ngModel', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> =
-                TestBed.createComponent(BasicTagInputComponent);
+      const fixture: ComponentFixture<
+        BasicTagInputComponent
+      > = TestBed.createComponent(BasicTagInputComponent);
             const component = getComponent(fixture);
 
             expect(component.items.length).toEqual(2);
-
         }));
 
         it('should override the default placeholder of the input', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithPlaceholder> =
-                TestBed.createComponent(TagInputComponentWithPlaceholder);
+      const fixture: ComponentFixture<
+        TagInputComponentWithPlaceholder
+      > = TestBed.createComponent(TagInputComponentWithPlaceholder);
             const component = getComponent(fixture);
 
             expect(component.items.length).toEqual(2);
-            expect(component.inputForm.input.nativeElement.getAttribute('placeholder')).toEqual('New Tag');
+      expect(
+        component.inputForm.input.nativeElement.getAttribute('placeholder')
+      ).toEqual('New Tag');
         }));
 
         it('should be "touched" on blur', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> =
-                TestBed.createComponent(BasicTagInputComponent);
+      const fixture: ComponentFixture<
+        BasicTagInputComponent
+      > = TestBed.createComponent(BasicTagInputComponent);
             const component = <TagInputComponent>getComponent(fixture);
             const onTouched = jasmine.createSpy('onTouched');
 
@@ -82,9 +100,10 @@ describe('TagInputComponent', () => {
     });
 
     describe('when a new item is added', () => {
-        it('should be added to the list of items and update its parent\'s model', fakeAsync(async () => {
-            const fixture: ComponentFixture<BasicTagInputComponent> =
-                TestBed.createComponent(BasicTagInputComponent);
+    it("should be added to the list of items and update its parent's model", fakeAsync(async () => {
+      const fixture: ComponentFixture<
+        BasicTagInputComponent
+      > = TestBed.createComponent(BasicTagInputComponent);
             const component = getComponent(fixture);
             const value = 'New Item';
 
@@ -102,8 +121,9 @@ describe('TagInputComponent', () => {
         }));
 
         it('should not be allowed if max-items is set up', fakeAsync(async () => {
-            const fixture: ComponentFixture<TagInputComponentWithMaxItems> =
-                TestBed.createComponent(TagInputComponentWithMaxItems);
+      const fixture: ComponentFixture<
+        TagInputComponentWithMaxItems
+      > = TestBed.createComponent(TagInputComponentWithMaxItems);
             const component = getComponent(fixture);
 
             const value = 'New Item';
@@ -120,8 +140,9 @@ describe('TagInputComponent', () => {
         }));
 
         it('emits the event onAdd', () => {
-            const fixture: ComponentFixture<TagInputComponentWithOutputs> =
-                TestBed.createComponent(TagInputComponentWithOutputs);
+      const fixture: ComponentFixture<
+        TagInputComponentWithOutputs
+      > = TestBed.createComponent(TagInputComponentWithOutputs);
             const itemName = 'New Item';
 
             fakeAsync(async (done: DoneFn) => {
@@ -142,8 +163,9 @@ describe('TagInputComponent', () => {
         });
 
         it('does not allow dupes', () => {
-            const fixture: ComponentFixture<BasicTagInputComponent> =
-                TestBed.createComponent(BasicTagInputComponent);
+      const fixture: ComponentFixture<
+        BasicTagInputComponent
+      > = TestBed.createComponent(BasicTagInputComponent);
             return fakeAsync(async () => {
                 const component = getComponent(fixture);
                 const item = 'Javascript';
@@ -203,8 +225,9 @@ describe('TagInputComponent', () => {
 
     describe('testing validators', () => {
         it('injects minLength validator and validates correctly', fakeAsync(async () => {
-            const fixture: ComponentFixture<TagInputComponentWithValidation> =
-                TestBed.createComponent(TagInputComponentWithValidation);
+      const fixture: ComponentFixture<
+        TagInputComponentWithValidation
+      > = TestBed.createComponent(TagInputComponentWithValidation);
             const component = getComponent(fixture);
             const value = 'Ab';
 
@@ -245,8 +268,9 @@ describe('TagInputComponent', () => {
         }));
 
         it('injects minLength validator and custom validator and validates correctly', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithValidation> =
-                TestBed.createComponent(TagInputComponentWithValidation);
+      const fixture: ComponentFixture<
+        TagInputComponentWithValidation
+      > = TestBed.createComponent(TagInputComponentWithValidation);
             const component = getComponent(fixture);
             const value = 'Javascript';
 
@@ -268,8 +292,9 @@ describe('TagInputComponent', () => {
         }));
 
         it('validates transformed values', fakeAsync(async () => {
-            const fixture: ComponentFixture<TagInputComponentWithTransformer> =
-                TestBed.createComponent(TagInputComponentWithTransformer);
+      const fixture: ComponentFixture<
+        TagInputComponentWithTransformer
+      > = TestBed.createComponent(TagInputComponentWithTransformer);
             const component = getComponent(fixture);
 
             component.setInputValue('@');
@@ -278,7 +303,9 @@ describe('TagInputComponent', () => {
             fixture.detectChanges();
             tick();
 
-            expect(component.items[2]).toEqual(match({display: 'prefix: @', value: 'prefix: @'}));
+      expect(component.items[2]).toEqual(
+        match({ display: 'prefix: @', value: 'prefix: @' })
+      );
             expect(component.items.length).toEqual(3);
 
             discardPeriodicTasks();
@@ -303,6 +330,7 @@ describe('TagInputComponent', () => {
             // selected tag is undefined
             expect(component.selectedTag).toEqual(undefined);
 
+      keyDown['keyCode'] = 8;
             // press backspace
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
@@ -362,14 +390,15 @@ describe('TagInputComponent', () => {
 
         it('it focuses input when pressing tab', fakeAsync(() => {
             component = getComponent(fixture);
-            keyUp['keyCode'] = 9;
+      keyDown['keyCode'] = 37;
 
             // press left arrow
-            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
+      component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
             // selected tag is the last one
             expect(component.selectedTag).toEqual('Typescript');
 
+      keyDown['keyCode'] = 9;
             // press tab -> focuses input
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
             expect(component.selectedTag).toEqual(undefined);
@@ -382,8 +411,9 @@ describe('TagInputComponent', () => {
 
     describe('when using a custom template', () => {
         it('replaced template with the custom one', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithTemplate> =
-                TestBed.createComponent(TagInputComponentWithTemplate);
+      const fixture: ComponentFixture<
+        TagInputComponentWithTemplate
+      > = TestBed.createComponent(TagInputComponentWithTemplate);
 
             const component = getComponent(fixture);
 
@@ -399,8 +429,9 @@ describe('TagInputComponent', () => {
         keyUp['keyCode'] = 73;
 
         it('adds an autocomplete to the template', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithAutocomplete> =
-                TestBed.createComponent(TagInputComponentWithAutocomplete);
+      const fixture: ComponentFixture<
+        TagInputComponentWithAutocomplete
+      > = TestBed.createComponent(TagInputComponentWithAutocomplete);
 
             const component = getComponent(fixture);
 
@@ -411,8 +442,9 @@ describe('TagInputComponent', () => {
         }));
 
         it('shows a dropdown when entering a matching value', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithAutocomplete> =
-                TestBed.createComponent(TagInputComponentWithAutocomplete);
+      const fixture: ComponentFixture<
+        TagInputComponentWithAutocomplete
+      > = TestBed.createComponent(TagInputComponentWithAutocomplete);
 
             const component = getComponent(fixture);
 
@@ -433,8 +465,9 @@ describe('TagInputComponent', () => {
         }));
 
         it('filters matching values', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithAutocomplete> =
-                TestBed.createComponent(TagInputComponentWithAutocomplete);
+      const fixture: ComponentFixture<
+        TagInputComponentWithAutocomplete
+      > = TestBed.createComponent(TagInputComponentWithAutocomplete);
             const component = getComponent(fixture);
 
             // press 'i'
@@ -468,21 +501,22 @@ describe('TagInputComponent', () => {
         }));
 
         it('adds items to tag input from autocomplete', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithAutocomplete> =
-                TestBed.createComponent(TagInputComponentWithAutocomplete);
+      const fixture: ComponentFixture<
+        TagInputComponentWithAutocomplete
+      > = TestBed.createComponent(TagInputComponentWithAutocomplete);
             const component = getComponent(fixture);
 
             expect(component.dropdown).toBeDefined();
-
+      component.dropdown.ngAfterViewInit();
             // press 'i'
             component.setInputValue('i');
             component.dropdown.show();
             fixture.detectChanges();
-            tick();
 
             const dropdown = component.dropdown.dropdown;
+      tick();
             const item = dropdown.menu.items.first;
-            dropdown.menu.state.dropdownState.onItemClicked.emit(item);
+      dropdown.menu.dropdownState.dropdownState.onItemClicked.emit(item);
 
             tick();
 
@@ -491,8 +525,9 @@ describe('TagInputComponent', () => {
         }));
 
         it('does not let add item if onlyFromAutocomplete is set to true', () => {
-            const fixture: ComponentFixture<TagInputComponentWithOnlyAutocomplete> =
-                TestBed.createComponent(TagInputComponentWithOnlyAutocomplete);
+      const fixture: ComponentFixture<
+        TagInputComponentWithOnlyAutocomplete
+      > = TestBed.createComponent(TagInputComponentWithOnlyAutocomplete);
 
             return fakeAsync(async () => {
                 const component = getComponent(fixture);
@@ -514,11 +549,12 @@ describe('TagInputComponent', () => {
 
     describe('model as strings', () => {
         it('adds item to the model as a string', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithModelAsStrings> =
-                TestBed.createComponent(TagInputComponentWithModelAsStrings);
+      const fixture: ComponentFixture<
+        TagInputComponentWithModelAsStrings
+      > = TestBed.createComponent(TagInputComponentWithModelAsStrings);
 
             const component: TagInputComponent = getComponent(fixture);
-            component.appendTag({display: 'Tag', value: 'Tag'});
+      component.appendTag({ display: 'Tag', value: 'Tag' });
 
             expect(component.items[2]).toEqual('Tag');
 
@@ -528,8 +564,9 @@ describe('TagInputComponent', () => {
 
     describe('when addOnBlur is true', () => {
         it('should add an item on blur', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithAddOnBlur> =
-                TestBed.createComponent(TagInputComponentWithAddOnBlur);
+      const fixture: ComponentFixture<
+        TagInputComponentWithAddOnBlur
+      > = TestBed.createComponent(TagInputComponentWithAddOnBlur);
 
             const component: TagInputComponent = getComponent(fixture);
 
@@ -547,8 +584,9 @@ describe('TagInputComponent', () => {
             let keyUp: Event = new Event('keyUp');
             keyUp['keyCode'] = 73;
 
-            const fixture: ComponentFixture<TagInputComponentWithAddOnBlur> =
-                TestBed.createComponent(TagInputComponentWithAddOnBlur);
+      const fixture: ComponentFixture<
+        TagInputComponentWithAddOnBlur
+      > = TestBed.createComponent(TagInputComponentWithAddOnBlur);
 
             const component: TagInputComponent = getComponent(fixture);
 
@@ -636,8 +674,9 @@ describe('TagInputComponent', () => {
             component.tags.first.toggleEditMode();
 
             // when in editing mode, Left/right arrow keys and backspace should not be passed to the tag-input.
-            component.tags.first.onKeyDown
-                .subscribe(event => fail('Key event: ' + event.event.keyCode + ' passed to tag-input'));
+      component.tags.first.onKeyDown.subscribe(event =>
+        fail('Key event: ' + event.event.keyCode + ' passed to tag-input')
+      );
 
             // press left arrow key
             keyDown['keyCode'] = 37;

@@ -167,5 +167,8 @@
       }
     }
   },
-  "defaultProject": "ngx-chips"
+  "defaultProject": "ngx-chips",
+  "cli": {
+    "analytics": false
+  }
 }
